@@ -149,13 +149,18 @@ def remove_combos(board : [[str]], combos : [[(int, int)]], skyfall = True):  # 
     fall_all(board)
 
     # SKYFALLLLLLLLLLL
-    if skyfall: 
+    if skyfall or bool(skyfall):
         for i in range(rows): 
             for j in range(columns): 
                 if board[i][j] == ' ': 
-                    board[i][j] = random.choices('RBGLDHJP', [1/4, 1/4, 1/4, 0, 1/4, 0, 0, 0])[0]
-                    #normal: [1/6, 1/6, 1/6, 1/6, 1/6, 1/6, 0, 0]
-                    #xellos: [1/4, 1/4, 1/4, 0, 1/4, 0, 0, 0]
+                    if skyfall == 'xellos':
+                        board[i][j] = random.choices('RBGLDHJP', [1/4, 1/4, 1/4, 0, 1/4, 0, 0, 0])[0]
+                    elif skyfall == 'jeanne':
+                        board[i][j] = random.choices('RBGLDHJP', [0, 1/4, 0, 1/4, 1/4, 1/4, 0, 0])[0]
+                    elif skyfall == 'akuma':
+                        board[i][j] = random.choices('RBGLDHJP', [1/4, 1/4, 0, 1/4, 1/4, 0, 0, 0])[0]
+                    else:
+                        board[i][j] = random.choices('RBGLDHJP', [1/6, 1/6, 1/6, 1/6, 1/6, 1/6, 0, 0])[0]
                     #off color (ie jeanne enma but lin bicolor): [1/4, 1/4, 1/4, 0, 0, 1/4, 0, 0]
 
 def find_nosf_combos(board : [[str]]): 
@@ -251,7 +256,7 @@ def print_combo_stats(board_string : str, board_size : (0,1), x_sf, print_stats 
                 #print_board(board)
                 #input()
                 total_combos += len(combo_coords)
-                remove_combos(board, combo_coords)
+                remove_combos(board, combo_coords, skyfall)
                 combo_coords = find_combos(board)
 
             cc_list.append(total_combos)
@@ -275,7 +280,7 @@ def print_combo_stats(board_string : str, board_size : (0,1), x_sf, print_stats 
 
 if __name__ == '__main__': 
 
-    board_string = "HJHJHJJLLLJHHJHLHJJHJLPHHJHJHJ"
+    board_string = "DDDLLLLLLDDDDDDLLLLLLDDDDDDLLL"
     #10c cascade: DLDLLDLLDLLDDLLDDLDDLLLDDLDDDL
     #10c inverted: LDLDDLDDLDDLLDDLLDLLDDDLLDLLLD
     #10c: DDDLLLLLLDDDDDDLLLLLLDDDDDDLLL
@@ -286,4 +291,4 @@ if __name__ == '__main__':
     LLDDDL
     LDLLLD
     '''
-    print_combo_stats(board_string, 0, 5, print_stats = True, skyfall = True)
+    print_combo_stats(board_string, 0, 5, print_stats = True, skyfall = 'xellos')
